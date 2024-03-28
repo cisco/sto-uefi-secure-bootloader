@@ -221,7 +221,7 @@ Rebased against 15.8
 *******************************************************************************
 ### What is the SHA256 hash of your final SHIM binary?
 *******************************************************************************
-[your text here]
+SHA2-256(shimx64.efi)=7d8bce770e56b615ba2b7021f56611fdb50948ebac4693fb0952e89d3c9e0258
 
 *******************************************************************************
 ### How do you manage and protect the keys used in your SHIM?
