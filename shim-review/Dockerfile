@@ -7,7 +7,7 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt build-dep -y shim
 
 # Clone shim
-RUN git clone -b "15.7" https://github.com/rhboot/shim.git /shim-build
+RUN git clone -b "15.8" https://github.com/rhboot/shim.git /shim-build
 WORKDIR /shim-build
 
 # Add our public certificate
@@ -27,3 +27,5 @@ RUN make -C build-x64 ARCH=x86_64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v
 # Final shim for installation
 RUN mkdir /shim-build/install
 RUN cp build-x64/shimx64.efi /shim-build/install
+RUN cp build-x64/fbx64.efi /shim-build/install
+RUN cp build-x64/mmx64.efi /shim-build/install

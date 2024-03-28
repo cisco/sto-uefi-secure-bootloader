@@ -11,8 +11,8 @@ This repo is for review of requests for signing shim.  To create a request for r
 - file an issue at https://github.com/rhboot/shim-review/issues with a link to your tag
 - approval is ready when the "accepted" label is added to your issue
 
-Note that we really only have experience with using GRUB2 on Linux, so asking
-us to endorse anything else for signing is going to require some convincing on
+Note that we really only have experience with using GRUB2 or systemd-boot on Linux, so
+asking us to endorse anything else for signing is going to require some convincing on
 your part.
 
 Check the docs directory in this repo for guidance on submission and
@@ -24,6 +24,7 @@ Here's the template:
 ### What organization or people are asking to have this signed?
 *******************************************************************************
 Cisco Systems
+
 *******************************************************************************
 ### What product or service is this for?
 *******************************************************************************
@@ -73,25 +74,31 @@ Alternate contact:
 - Email address: valuthra@cisco.com
 - PGP key fingerprint: 0E5D 2BCE 8F16 5B33 6566  FC59 1934 ECB9 B06D 3A21
 
+*******************************************************************************
+### Were these binaries created from the 15.8 shim release tar?
+Please create your shim binaries starting with the 15.8 shim release tar file: https://github.com/rhboot/shim/releases/download/15.8/shim-15.8.tar.bz2
+
+This matches https://github.com/rhboot/shim/releases/tag/15.8 and contains the appropriate gnu-efi source.
 
 *******************************************************************************
-### Were these binaries created from the 15.7 shim release tar?
-Please create your shim binaries starting with the 15.7 shim release tar file: https://github.com/rhboot/shim/releases/download/15.7/shim-15.7.tar.bz2
-
-This matches https://github.com/rhboot/shim/releases/tag/15.7 and contains the appropriate gnu-efi source.
-
-*******************************************************************************
-Yes, we created the shim binaries from the 15.7 shim release at https://github.com/rhboot/shim/releases/tag/15.7
+Yes, we created the shim binaries from the 15.8 shim release at https://github.com/rhboot/shim/releases/tag/15.8
 
 *******************************************************************************
 ### URL for a repo that contains the exact code which was built to get this binary:
 *******************************************************************************
-https://github.com/cisco/sto-uefi-secure-bootloader/tree/rel_5/shim-review
+[your url here]
 
 *******************************************************************************
 ### What patches are being applied and why:
 *******************************************************************************
 None
+
+*******************************************************************************
+### Do you have the NX bit set in your shim? If so, is your entire boot stack NX-compatible and what testing have you done to ensure such compatibility?
+
+See https://techcommunity.microsoft.com/t5/hardware-dev-center/nx-exception-for-shim-community/ba-p/3976522 for more details on the signing of shim without NX bit.
+*******************************************************************************
+[your text here]
 
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader what exact implementation of Secureboot in GRUB2 do you have? (Either Upstream GRUB2 shim_lock verifier or Downstream RHEL/Fedora/Debian/Canonical-like implementation)
@@ -143,7 +150,7 @@ Using downstream implementations from Almalinux and Canonical
 These CVEs are addreessed in the parent distros. We do not modify the source of the grub.
 
 *******************************************************************************
-### If these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 4?
+### If shim is loading GRUB2 bootloader, and if these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 4?
 The entry should look similar to: `grub,4,Free Software Foundation,grub,GRUB_UPSTREAM_VERSION,https://www.gnu.org/software/grub/`
 *******************************************************************************
 Yes
@@ -154,7 +161,6 @@ Yes
 *******************************************************************************
 •	Our SHIM sub-CA was added to the Microsoft DBX.
 •	Yes, a new root of trust is in the SHIM.
-
 
 *******************************************************************************
 ### If your boot chain of trust includes a Linux kernel:
@@ -191,7 +197,7 @@ N/A
 ### What OS and toolchain must we use to reproduce this build?  Include where to find it, etc.  We're going to try to reproduce your build as closely as possible to verify that it's really a build of the source tree you tell us it is, so these need to be fairly thorough. At the very least include the specific versions of gcc, binutils, and gnu-efi which were used, and where to find those binaries.
 ### If the shim binaries can't be reproduced using the provided Dockerfile, please explain why that's the case and what the differences would be.
 *******************************************************************************
-The Makefile is https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_5/shim-review/Makefile which uses the Dockerfile https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_5/shim-review/Dockerfile .
+Recheck
 
 You can use 
 
@@ -203,17 +209,18 @@ make build-no-cache
 ### Which files in this repo are the logs for your build?
 This should include logs for creating the buildroots, applying patches, doing the build, creating the archives, etc.
 *******************************************************************************
-The log file is: https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_5/shim-review/build.log
+[your text here]
 
 *******************************************************************************
-### What changes were made since your SHIM was last signed?
+### What changes were made in the distro's secure boot chain since your SHIM was last signed?
+For example, signing new kernel's variants, UKI, systemd-boot, new certs, new CA, etc..
 *******************************************************************************
-Rebased against 15.7
+Rebased against 15.8
 
 *******************************************************************************
 ### What is the SHA256 hash of your final SHIM binary?
 *******************************************************************************
-SHA2-256(shimx64.efi)= ead71732d1fbd7710f1aeb7c69b4ad77bfb7db7533bf5708e7c719bf0aac2df3
+[your text here]
 
 *******************************************************************************
 ### How do you manage and protect the keys used in your SHIM?
@@ -226,29 +233,35 @@ Our keys are in a Cisco HSM, accessible only by authorized members.
 No, we do not use EV certificates.
 
 *******************************************************************************
-### Do you add a vendor-specific SBAT entry to the SBAT section in each binary that supports SBAT metadata ( GRUB2, fwupd, fwupdate, shim + all child shim binaries )?
-### Please provide exact SBAT entries for all SBAT binaries you are booting or planning to boot directly through shim.
+### Do you add a vendor-specific SBAT entry to the SBAT section in each binary that supports SBAT metadata ( GRUB2, fwupd, fwupdate, systemd-boot, systemd-stub, UKI(s), shim + all child shim binaries )?
+### Please provide exact SBAT entries for all shim binaries as well as all SBAT binaries that shim will directly boot.
 ### Where your code is only slightly modified from an upstream vendor's, please also preserve their SBAT entries to simplify revocation.
-If you are using a downstream implementation of GRUB2 (e.g. from Fedora or Debian), please
-preserve the SBAT entry from those distributions and only append your own.
-More information on how SBAT works can be found [here](https://github.com/rhboot/shim/blob/main/SBAT.md).
+If you are using a downstream implementation of GRUB2 or systemd-boot (e.g.
+from Fedora or Debian), please preserve the SBAT entry from those distributions
+and only append your own. More information on how SBAT works can be found
+[here](https://github.com/rhboot/shim/blob/main/SBAT.md).
 *******************************************************************************
 shim/fb/mm:
 ```
 sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
-shim,3,UEFI shim,shim,1,https://github.com/rhboot/shim
-shim.cisco,1,Cisco,shim,15.7,psirt@cisco.com
+shim,4,UEFI shim,shim,1,https://github.com/rhboot/shim
+shim.cisco,1,Cisco,shim,15.8,psirt@cisco.com
 ```
 
 We use upstreams distros for grub since we are not rebuilding it.
 
 *******************************************************************************
-### Which modules are built into your signed GRUB2 image?
+### If shim is loading GRUB2 bootloader, which modules are built into your signed GRUB2 image?
 *******************************************************************************
-N/A
+Recheck N/A
 
 *******************************************************************************
-### What is the origin and full version number of your bootloader (GRUB2 or other)?
+### If you are using systemd-boot on arm64 or riscv, is the fix for [unverified Devicetree Blob loading](https://github.com/systemd/systemd/security/advisories/GHSA-6m6p-rjcq-334c) included?
+*******************************************************************************
+[your text here]
+
+*******************************************************************************
+### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
 AlmaLinux 9: grub2 - Version 2.06-61
 AlmaLinux 8: grub2 - Version 2.02-148
@@ -261,7 +274,7 @@ Ubuntu: grub2 - Version 2.06-2
 N/A
 
 *******************************************************************************
-### If your GRUB2 launches any other binaries that are not the Linux kernel in SecureBoot mode, please provide further details on what is launched and how it enforces Secureboot lockdown.
+### If your GRUB2 or systemd-boot launches any other binaries that are not the Linux kernel in SecureBoot mode, please provide further details on what is launched and how it enforces Secureboot lockdown.
 *******************************************************************************
 N/A
 

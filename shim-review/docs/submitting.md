@@ -1,10 +1,9 @@
 # Submitting a shim build
 
-Here's a quick guide to the process for getting a shim build reviewed
-and signed. Other docs here:
+Here's a quick guide to the process for getting a shim build reviewed and
+signed. The other, more detailed docs are listed here: (one as of today)
 
-* [[Recommendations for vendors|vendor-recommendations]]
-* [[Guidelines for reviewers|reviewer-guidelines]]
+- [Guidelines for reviewers](./reviewer-guidelines)
 
 If anything here or in the submission templates is not clear, please
 ask for help before you spend a lot of time on an incorrect path.
@@ -36,7 +35,7 @@ you.
 
 If you're sure you need your own shim binary signed by Microsoft,
 first go and create an account etc. with them. Check
-[[Microsoft's signing policies|https://techcommunity.microsoft.com/t5/hardware-dev-center/updated-uefi-signing-requirements/ba-p/1062916]]
+[Microsoft's signing policies](https://techcommunity.microsoft.com/t5/hardware-dev-center/updated-uefi-signing-requirements/ba-p/1062916)
 for all their specific requirements.
 
 ## 2. Build and test shim
@@ -66,8 +65,8 @@ accepted.
 **SBAT** is ``Secure Boot Advanced Targeting``. It's a method to
 efficiently handle revocation of old insecure Secure Boot binaries,
 introduced in shim for the 15.3 release. The
-[[SBAT spec|https://github.com/rhboot/shim/blob/main/SBAT.md]] and
-[[SBAT examples|https://github.com/rhboot/shim/blob/main/SBAT.example.md]]
+[SBAT spec](https://github.com/rhboot/shim/blob/main/SBAT.md) and
+[SBAT examples](https://github.com/rhboot/shim/blob/main/SBAT.example.md)
 documents have a lot more information about how it works, and what's
 needed.
 
@@ -97,6 +96,9 @@ You'll need to embed certificate data into your shim build, of
 course - this is the purpose of shim! You can include multiple
 certificates if desired.
 
+**NOTE:** The certificate(s) must be encoded using **DER** format,
+**not** PEM.
+
 You may also need to include lists of revocations. For example, you
 may need to revoke old binaries or signatures after a security hole
 has been discovered. It's possible to revoke a certificate (and
@@ -105,9 +107,9 @@ loading individual binaries by checksum.
 
 There are strong recommendations on the types of certificates that
 should be used in shim, and also on how keys should be managed for
-security. See the appropriate section in
-[[Recommendations for vendors|vendor-recommendations]] for tips on
-this, and also some sugested schems for key and certificate
+security. See the 12th bullet in [Microsoft UEFI Signing
+Requirements](https://techcommunity.microsoft.com/t5/hardware-dev-center/updated-uefi-signing-requirements/ba-p/1062916)
+for tips on this, and also some sugested schems for key and certificate
 management.
 
 ### 3.3 Reproducible build
@@ -154,14 +156,14 @@ shim. If you're not, reviewers will simply reject your submission and
 ask you to start again.
 
 Check that you have picked up any upstream patches recommended for
-your use cases. To help with this, there is a tracking issue pinned in
-the [[shim-review|https://github.com/rhboot/shim-review/issues]]
+your use cases. To help with this, there should be tracking issues pinned in
+the [shim-review](https://github.com/rhboot/shim-review/issues)
 issues list which includes details of current patches recommended for
 inclusion.
 
 If you add any patches from upstream like this, again
 **please** make it easy for reviewers to verify what the patches
-are. ```git format-patch`` is your friend here - patch file names,
+are. ``git format-patch`` is your friend here - patch file names,
 commit hashes and commit messages will all help the reviewer here.
 
 If you have your **own** patches to shim, these will of course take
@@ -172,16 +174,16 @@ exactly what your changes are and why you need them. Shim is
 security-critical and reviewers will need to understand your changes
 and verify that they do not cause security regressions.
 
-Similarly, shim is normally used to load GRUB as the system
-bootloader. if you're doing something different, this will need deeper
-review. Please make it as easy as possible for reviewers to understand
-what you're doing (and why!) if you want them to accept your shim for
-signing.
+Similarly, shim is normally used to load GRUB or systemd-boot as the
+system bootloader. if you're doing something different, this will need
+deeper review. Please make it as easy as possible for reviewers to
+understand what you're doing (and why!) if you want them to accept your
+shim for signing.
 
 ### 3.5 Sources and patches for other components
 
-Reviewers will expect to be able to inspect your GRUB sources to
-validate the state of Secure Boot patches in particular, and will
-normally also ask about patches to other system components like Linux
-and fwupd. We need to consider the security of the entire boot chain
-here - shim is just the first step.
+Reviewers will expect to be able to inspect your GRUB or systemd-boot
+sources to validate the state of Secure Boot patches in particular, and
+will normally also ask about patches to other system components like
+Linux and fwupd. We need to consider the security of the entire boot
+chain here - shim is just the first step.

@@ -21,8 +21,8 @@ First of all, there are some higher-level things to consider:
 1. Does the vendor actually **need** to get a signed shim? Some are
    not clear about this. If they don't need to run on ~all machines,
    they can just sign things themselves.  If they don't **need** to
-   customise the kernel, they should reuse shim+grub+kernel from
-   another signed distro instead.
+   customise the kernel, they should reuse
+   shim+grub/systemd-boot+kernel from another signed distro instead.
 
 1. Does the vendor look like they might actually be around to deal
    with security issues in the future? A tiny 1-man outfit may just go
@@ -35,11 +35,11 @@ First of all, there are some higher-level things to consider:
       **FAIL**.
 
    1. Patches applied from upstream should be obvious and easy to
-      identify, whether in shim or grub or kernel. If this causes you
-      to spend massively more effort in reviewing, then that is bad of
-      course. Mention this kind of thing, and explain what the
-      developer could do to make our lives (and hence their lives!)
-      easier here.
+      identify, whether in shim or grub or systemd-boot or kernel. If
+      this causes you to spend massively more effort in reviewing, then
+      that is bad of course. Mention this kind of thing, and explain
+      what the developer could do to make our lives (and hence their
+      lives!) easier here.
 
    1. Not providing a Dockerfile that works, or one that makes it hard
       for you to see what's going on.
@@ -169,11 +169,52 @@ If grub is used:
    filesystem modules have patchy security history and are best left
    disabled.
 
+## systemd-boot
+
+Does the submitter use systemd-boot as a bootloader? This is also used
+in certain distributions, but less common than grub.
+
+If systemd-boot is used:
+
+1. Is it used exclusively, or provided alongside grub as an alternative
+   package?
+1. Is it intended to be used with BLS
+   ([Boot Loader Specification](https://uapi-group.org/specifications/specs/boot_loader_specification/))
+   Type #1 or Type #2 third stages, or either?
+1. Is it the minimum required version, or alternatively does it have
+   the patches stated by the issue template and README.md, if any?
+1. Does it include the appropriate SBAT metadata, and if Type #2 BLS
+   (i.e.: UKIs) are used, are the identifiers of systemd-boot and
+   systemd-stub (UKI/kernel.efi) separate and distinct (examples after
+   the list)? For UKIs, is there also a line that identifies the binary
+   as a UKI tagged with vendor-specific metadata?
+1. Are there any custom patches applied?  If so, are they explained by
+   the submitter and well understood? This can be **very**
+   time-consuming to do right - if a vendor is doing their own novel
+   patches we may need to get more reviews.
+1. For more information about systemd-boot's security posture, please
+   consult [its documentation](https://github.com/systemd/systemd/blob/main/src/boot/efi/UEFI_SECURITY.md).
+
+Example of the .sbat entry of a systemd-boot binary:
+```
+sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
+systemd-boot,1,The systemd Developers,systemd,255,https://systemd.io/
+systemd-boot.debian,1,Debian GNU/Linux,systemd,255-1,https://bugs.debian.org/
+```
+
+Example of the .sbat entry of a UKI:
+```
+sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
+systemd-stub,1,The systemd Developers,systemd,255,https://systemd.io/
+systemd-stub.debian,1,Debian GNU/Linux,systemd,255-1,https://bugs.debian.org/
+uki.debian,1,UKI for Debian GNU/Linux,debian,12,https://uapi-group.org/specifications/specs/unified_kernel_image/
+```
+
 ## Alternative second-stage bootloaders
 
-If the submitter is **not** using grub, additional full review by
-someone who is capable of performing it will be required. **Ask for
-help** if you're not sure.
+If the submitter is **not** using grub or systemd-boot, additional full
+review by someone who is capable of performing it will be required.
+**Ask for help** if you're not sure.
 
 ## Kernel
 
