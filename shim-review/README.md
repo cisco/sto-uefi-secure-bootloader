@@ -210,7 +210,7 @@ make build-no-cache
 ### Which files in this repo are the logs for your build?
 This should include logs for creating the buildroots, applying patches, doing the build, creating the archives, etc.
 *******************************************************************************
-[The log file is: https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_6/shim-review/build.log](https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_6/shim-review/build.log)
+The log file is: https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_6/shim-review/build.log
 
 *******************************************************************************
 ### What changes were made in the distro's secure boot chain since your SHIM was last signed?
@@ -259,7 +259,7 @@ Recheck N/A
 *******************************************************************************
 ### If you are using systemd-boot on arm64 or riscv, is the fix for [unverified Devicetree Blob loading](https://github.com/systemd/systemd/security/advisories/GHSA-6m6p-rjcq-334c) included?
 *******************************************************************************
-[your text here]
+Recheck [your text here]
 
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
