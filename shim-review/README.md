@@ -98,7 +98,7 @@ None
 
 See https://techcommunity.microsoft.com/t5/hardware-dev-center/nx-exception-for-shim-community/ba-p/3976522 for more details on the signing of shim without NX bit.
 *******************************************************************************
-Recheck [your text here]
+No change to default NX bit setting. We tested it on our target x86 architecture with entire shim/grub bootchain.
 
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader what exact implementation of Secureboot in GRUB2 do you have? (Either Upstream GRUB2 shim_lock verifier or Downstream RHEL/Fedora/Debian/Canonical-like implementation)
@@ -254,12 +254,12 @@ We use upstreams distros for grub since we are not rebuilding it.
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader, which modules are built into your signed GRUB2 image?
 *******************************************************************************
-Recheck N/A
+We inherit the same modules from the upstream grub providers.
 
 *******************************************************************************
 ### If you are using systemd-boot on arm64 or riscv, is the fix for [unverified Devicetree Blob loading](https://github.com/systemd/systemd/security/advisories/GHSA-6m6p-rjcq-334c) included?
 *******************************************************************************
-Recheck [your text here]
+N/A
 
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
