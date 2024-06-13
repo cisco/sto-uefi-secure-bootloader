@@ -4,11 +4,13 @@ FROM ubuntu:jammy
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt update -y && \
     DEBIAN_FRONTEND=noninteractive apt install -y devscripts git-buildpackage software-properties-common && \
-    apt build-dep -y shim
+    apt build-dep -y shim tar wget
 
-# Clone shim
-RUN git clone -b "15.8" https://github.com/rhboot/shim.git /shim-build
-WORKDIR /shim-build
+# Download and extract the upstream source tarball for shim
+RUN wget https://github.com/rhboot/shim/releases/download/15.8/shim-15.8.tar.bz2
+RUN mkdir /shim-build
+RUN tar -xvf shim-15.8.tar.bz2 --directory /shim-build
+WORKDIR /shim-build/shim-15.8
 
 # Add our public certificate
 ADD Cisco_Virtual_UEFI_SubCA_v3.der .
@@ -20,9 +22,11 @@ RUN mkdir build-x64
 ADD sbat.csv data/sbat.csv
 
 # Build 64-bit
-RUN make update
 RUN make -C build-x64 ARCH=x86_64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.der \
     TOPDIR=.. -f ../Makefile
+
+# Output hash of shimx64.efi
+RUN sha256sum build-x64/shimx64.efi
 
 # Final shim for installation
 RUN mkdir /shim-build/install
