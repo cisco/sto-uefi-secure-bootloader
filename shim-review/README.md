@@ -32,7 +32,13 @@ Provide the information, which can prove the genuineness with certainty.
 Company/tax register entries or equivalent:  
 (a link to the organization entry in your jurisdiction's register will do)  
 
-[your text here]
+Cisco Systems, Inc, IRS EIN Tax ID 77-0059951
+
+Cisco Systems Annual reports filed with the SEC:
+https://www.sec.gov/edgar/browse/?CIK=858877
+
+Latest 10-K shows EIN:
+https://www.sec.gov/ix?doc=/Archives/edgar/data/0000858877/000085887725000111/csco-20250726.htm
 
 The public details of both your organization and the issuer in the EV certificate used for signing .cab files at Microsoft Hardware Dev Center File Signing Services.  
 (**not** the CA certificate embedded in your shim binary)
@@ -44,7 +50,7 @@ Issuer: O=MyIssuer, Ltd., CN=MyIssuer EV Code Signing CA
 Subject: C=XX, O=MyCompany, Inc., CN=MyCompany, Inc.
 ```
 
-[your text here]
+[TODO]
 
 *******************************************************************************
 ### What product or service is this for?
@@ -129,7 +135,7 @@ Hint: If you attach all the patches and modifications that are being used to you
 
 You can also point to your custom git servers, where the code is hosted.
 *******************************************************************************
-[your url here]
+https://github.com/cisco/sto-uefi-secure-bootloader/blob/arm_rel_1/shim-review
 
 *******************************************************************************
 ### What patches are being applied and why:
@@ -224,7 +230,7 @@ Yes
 ### with Secure Boot enabled?
 Hint: If it does not, we are not likely to sign your shim.
 *******************************************************************************
-[your text here]
+[TODO]
 
 *******************************************************************************
 ### Do you build your signed kernel with additional local patches? What do they do?
@@ -265,7 +271,7 @@ Yes
 ### Which files in this repo are the logs for your build?
 This should include logs for creating the buildroots, applying patches, doing the build, creating the archives, etc.
 *******************************************************************************
-TBA: file link
+https://github.com/cisco/sto-uefi-secure-bootloader/blob/arm_rel_1/shim-review/build.log
 
 *******************************************************************************
 ### What changes were made in the distro's secure boot chain since your SHIM was last signed?
@@ -335,10 +341,7 @@ N/A
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
-AlmaLinux 9: grub2 - Version 2.06-61
-AlmaLinux 8: grub2 - Version 2.02-148
-
-Ubuntu: grub2 - TBA
+[TODO]
 
 
 *******************************************************************************
