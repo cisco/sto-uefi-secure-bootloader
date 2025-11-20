@@ -50,7 +50,9 @@ Issuer: O=MyIssuer, Ltd., CN=MyIssuer EV Code Signing CA
 Subject: C=XX, O=MyCompany, Inc., CN=MyCompany, Inc.
 ```
 
-[TODO]
+Issuer: CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O="DigiCert, Inc.", C=US
+
+Subject: CN="CISCO SYSTEMS, INC.", O="CISCO SYSTEMS, INC.", L=San Jose, ST=California, C=US, SERIALNUMBER=3704171
 
 *******************************************************************************
 ### What product or service is this for?
@@ -154,7 +156,7 @@ No change to default NX bit setting. We tested it on our target ARM architecture
 ### What exact implementation of Secure Boot in GRUB2 do you have? (Either Upstream GRUB2 shim_lock verifier or Downstream RHEL/Fedora/Debian/Canonical-like implementation)
 Skip this, if you're not using GRUB2.
 *******************************************************************************
-Using downstream implementations from Almalinux and Canonical
+Using downstream implementations from Windriver LTS24
 
 *******************************************************************************
 ### Do you have fixes for all the following GRUB2 CVEs applied?
@@ -230,7 +232,7 @@ Yes
 ### with Secure Boot enabled?
 Hint: If it does not, we are not likely to sign your shim.
 *******************************************************************************
-[TODO]
+We will be enabling upstream kernel lockdown flags.
 
 *******************************************************************************
 ### Do you build your signed kernel with additional local patches? What do they do?
@@ -341,7 +343,7 @@ N/A
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
-[TODO]
+Windriver LTS24 - grub2.12
 
 
 *******************************************************************************
@@ -370,7 +372,7 @@ No
 *******************************************************************************
 ### What kernel are you using? Which patches and configuration does it include to enforce Secure Boot?
 *******************************************************************************
-Latest kernel version of Ubuntu and AlmaLinux.
+Latest kernel version of Windriver LTS24.
 
 *******************************************************************************
 ### What contributions have you made to help us review the applications of other applicants?
