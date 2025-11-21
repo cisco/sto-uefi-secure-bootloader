@@ -79,7 +79,7 @@ You will be asked to post the contents of these mails in your `shim-review` issu
 - Name: Medini Narasimha Bailkeri
 - Position: Software Engineer
 - Email address: menarasi@cisco.com
-- PGP key fingerprint: 
+- PGP key fingerprint: [TBA]
 
 (Key should be signed by the other security contacts, pushed to a keyserver
 like keyserver.ubuntu.com, and preferably have signatures that are reasonably
