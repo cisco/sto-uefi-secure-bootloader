@@ -10,7 +10,7 @@ build-no-cache:
 
 # Run the container to copy the two shim builds to the host
 copy:
-	sudo docker run -v ${PWD}:/host:z ${TAG} cp -r /shim-build/install /host
+	sudo docker run --platform=linux/arm64 -v ${PWD}:/host:z ${TAG} cp -r /shim-build/install /host
 
 # Print details of the public certificate
 cert-info:
