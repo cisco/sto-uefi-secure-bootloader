@@ -1,5 +1,4 @@
-ARG BUILDPLATFORM
-FROM --platform=$BUILDPLATFORM ubuntu:jammy
+FROM ubuntu:jammy
 
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt update -y && \
@@ -22,8 +21,7 @@ RUN mkdir build-aarch64
 ADD sbat.csv data/sbat.csv
 
 # On x86_64 hosts, use the aarch64 cross-compiler explicitly.
-ARG BUILDPLATFORM
-RUN if [ "$BUILDPLATFORM" = "linux/arm64" ] || [ "$(uname -m)" = "aarch64" ]; then \
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
         make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
             TOPDIR=.. -f ../Makefile; \
     else \
