@@ -2,15 +2,15 @@ TAG=cisco-uefi-secure-bootloader-arm
 LOGFILE=build.log
 
 build:
-	sudo docker build -t ${TAG} . 2>&1 | tee ${LOGFILE}
+	sudo docker build --platform=linux/amd64 -t ${TAG} . 2>&1 | tee ${LOGFILE}
 
 # Build without cache to make grabbing the full build log easier
 build-no-cache:
-	sudo docker build --no-cache -t ${TAG} . 2>&1 | tee ${LOGFILE}
+	sudo docker build --platform=linux/amd64 --no-cache -t ${TAG} . 2>&1 | tee ${LOGFILE}
 
 # Run the container to copy the two shim builds to the host
 copy:
-	sudo docker run -v ${PWD}:/host:z ${TAG} cp -r /shim-build/install /host
+	sudo docker run --platform=linux/amd64 -v ${PWD}:/host:z ${TAG} cp -r /shim-build/install /host
 
 # Print details of the public certificate
 cert-info:

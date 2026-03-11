@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM --platform=linux/amd64 ubuntu:jammy
 
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt update -y && \
@@ -20,15 +20,10 @@ RUN mkdir build-aarch64
 # Add our SBAT data
 ADD sbat.csv data/sbat.csv
 
-# On x86_64 hosts, use the aarch64 cross-compiler explicitly.
-RUN if [ "$(uname -m)" = "aarch64" ]; then \
-        make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
-            TOPDIR=.. -f ../Makefile; \
-    else \
-        make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
-            TOPDIR=.. -f ../Makefile \
-            CROSS_COMPILE=aarch64-linux-gnu-; \
-    fi
+# Always use the cross-compiler to ensure reproducible builds across all host architectures.
+RUN make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
+        TOPDIR=.. -f ../Makefile \
+        CROSS_COMPILE=aarch64-linux-gnu-
 
 # Output hash of shimaa64.efi
 RUN sha256sum build-aarch64/shimaa64.efi

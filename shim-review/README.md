@@ -313,7 +313,7 @@ This is first application for having ARM based shim signed.
 *******************************************************************************
 ### What is the SHA256 hash of your final shim binary?
 *******************************************************************************
-77e7d0f1dce3ee93a00e47513ff90f61024670bc4973d25d8c6b706b6d03418b
+4eee2b5ca77680ee31fe74487c43cadb79ee42b945cab0dd54676322c9c73220
 
 *******************************************************************************
 ### How do you manage and protect the keys used in your shim?
