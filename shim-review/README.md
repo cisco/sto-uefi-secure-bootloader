@@ -15,6 +15,10 @@ Note that we really only have experience with using GRUB2 or systemd-boot on Lin
 asking us to endorse anything else for signing is going to require some convincing on
 your part.
 
+As of 20 October 2025, shims sent to Microsoft will be signed with the 2011 and 2023 keys. For each shim you submit, you will receive two copies back, each signed by a different key. Here is the latest information from Microsoft: https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787
+
+New signing requirements have also taken effect, and are available here: https://techcommunity.microsoft.com/blog/hardware-dev-center/updated-microsoft-uefi-signing-requirements/1062916 Please note that undergoing this shim review exempts you from yearly security audits, as long as your shim only hands off to open source boot loaders.
+
 Hint: check the [docs](./docs/) directory in this repo for guidance on submission and getting your shim signed.
 
 Here's the template:
@@ -201,13 +205,36 @@ Using downstream implementations from Windriver LTS24
   * Details: https://lists.gnu.org/archive/html/grub-devel/2023-10/msg00028.html, SBAT increase to 4
   * CVE-2023-4693
   * CVE-2023-4692
+* February 2025
+  * Details: https://lists.gnu.org/archive/html/grub-devel/2025-02/msg00024.html, SBAT increase to 5
+  * CVE-2024-45774
+  * CVE-2024-45775
+  * CVE-2024-45776
+  * CVE-2024-45777
+  * CVE-2024-45778
+  * CVE-2024-45779
+  * CVE-2024-45780
+  * CVE-2024-45781
+  * CVE-2024-45782
+  * CVE-2024-45783
+  * CVE-2025-0622
+  * CVE-2025-0624
+  * CVE-2025-0677
+  * CVE-2025-0678
+  * CVE-2025-0684
+  * CVE-2025-0685
+  * CVE-2025-0686
+  * CVE-2025-0689
+  * CVE-2025-0690
+  * CVE-2025-1118
+  * CVE-2025-1125
 *******************************************************************************
 These CVEs are addreessed in the parent distros. We do not modify the source of the grub.
 
 *******************************************************************************
-### If shim is loading GRUB2 bootloader, and if these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 4?
+### If shim is loading GRUB2 bootloader, and if these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 5?
 Skip this, if you're not using GRUB2, otherwise do you have an entry in your GRUB2 binary similar to:  
-`grub,4,Free Software Foundation,grub,GRUB_UPSTREAM_VERSION,https://www.gnu.org/software/grub/`?
+`grub,5,Free Software Foundation,grub,GRUB_UPSTREAM_VERSION,https://www.gnu.org/software/grub/`?
 *******************************************************************************
 Yes
 
@@ -229,8 +256,7 @@ If you are shipping an older kernel, double-check your sources; maybe you do not
 Yes
 
 *******************************************************************************
-### How does your signed kernel enforce lockdown when your system runs
-### with Secure Boot enabled?
+### How does your signed kernel enforce lockdown when your system runs with Secure Boot enabled?
 Hint: If it does not, we are not likely to sign your shim.
 *******************************************************************************
 We will be enabling upstream kernel lockdown flags.
@@ -319,7 +345,7 @@ If you are using a downstream implementation of GRUB2 (e.g. from Fedora or Debia
 
 **Remember to post the entries of all the binaries. Apart from your bootloader, you may also be shipping e.g. a firmware updater, which will also have these.**
 
-Hint: run `objcopy --only-section .sbat -O binary YOUR_EFI_BINARY /dev/stdout` to get these entries. Paste them here. Preferably surround each listing with three backticks (\`\`\`), so they render well.
+Hint: run `objcopy --dump-section .sbat=/dev/stdout YOUR_EFI_BINARY` to get these entries. Paste them here. Preferably surround each listing with three backticks (\`\`\`), so they render well.
 *******************************************************************************
 ```
 sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
@@ -345,7 +371,6 @@ N/A
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
 Windriver LTS24 - grub2.12
-
 
 *******************************************************************************
 ### If your shim launches any other components apart from your bootloader, please provide further details on what is launched.

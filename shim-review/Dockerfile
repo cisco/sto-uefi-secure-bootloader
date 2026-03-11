@@ -1,9 +1,9 @@
-# run "docker pull ubuntu:jammy" before building. 
-FROM ubuntu:jammy
+ARG BUILDPLATFORM
+FROM --platform=$BUILDPLATFORM ubuntu:jammy
 
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt update -y && \
-    DEBIAN_FRONTEND=noninteractive apt install -y devscripts git-buildpackage software-properties-common && \
+    DEBIAN_FRONTEND=noninteractive apt install -y devscripts git-buildpackage software-properties-common gcc-aarch64-linux-gnu && \
     apt build-dep -y shim tar wget
 
 # Download and extract the upstream release tarball for shim
@@ -21,9 +21,16 @@ RUN mkdir build-aarch64
 # Add our SBAT data
 ADD sbat.csv data/sbat.csv
 
-# Build 64-bit ARM - simple native build
-RUN make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
-    TOPDIR=.. -f ../Makefile
+# On x86_64 hosts, use the aarch64 cross-compiler explicitly.
+ARG BUILDPLATFORM
+RUN if [ "$BUILDPLATFORM" = "linux/arm64" ] || [ "$(uname -m)" = "aarch64" ]; then \
+        make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
+            TOPDIR=.. -f ../Makefile; \
+    else \
+        make -C build-aarch64 ARCH=aarch64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.cer \
+            TOPDIR=.. -f ../Makefile \
+            CROSS_COMPILE=aarch64-linux-gnu-; \
+    fi
 
 # Output hash of shimaa64.efi
 RUN sha256sum build-aarch64/shimaa64.efi
