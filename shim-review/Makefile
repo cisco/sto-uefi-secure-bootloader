@@ -2,11 +2,11 @@ TAG=cisco-uefi-secure-bootloader-arm
 LOGFILE=build.log
 
 build:
-	sudo docker build -t ${TAG} . 2>&1 | tee ${LOGFILE}
+	sudo DOCKER_BUILDKIT=1 docker build -t ${TAG} . 2>&1 | tee ${LOGFILE}
 
 # Build without cache to make grabbing the full build log easier
 build-no-cache:
-	sudo docker build --no-cache -t ${TAG} . 2>&1 | tee ${LOGFILE}
+	sudo DOCKER_BUILDKIT=1 docker build --no-cache -t ${TAG} . 2>&1 | tee ${LOGFILE}
 
 # Run the container to copy the two shim builds to the host
 copy:
