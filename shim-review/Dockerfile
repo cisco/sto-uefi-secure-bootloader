@@ -7,10 +7,10 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt build-dep -y shim tar wget
 
 # Download and extract the upstream source tarball for shim
-RUN wget https://github.com/rhboot/shim/releases/download/15.8/shim-15.8.tar.bz2
+RUN wget https://github.com/rhboot/shim/releases/download/16.1/shim-16.1.tar.bz2
 RUN mkdir /shim-build
-RUN tar -xvf shim-15.8.tar.bz2 --directory /shim-build
-WORKDIR /shim-build/shim-15.8
+RUN tar -xvf shim-16.1.tar.bz2 --directory /shim-build
+WORKDIR /shim-build/shim-16.1
 
 # Add our public certificate
 ADD Cisco_Virtual_UEFI_SubCA_v3.der .
