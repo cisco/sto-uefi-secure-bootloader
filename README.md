@@ -8,4 +8,4 @@ To use shim, simply place a DER-encoded public certificate in a file such as pub
 
 There are a couple of build options, and a couple of ways to customize the build, described in BUILDING.
 
-This branch uses docker to build the shim based on the Redhat 15.4 version. The source is pulled directly from https://github.com/rhboot/shim.git.
+This branch uses docker to build the shim based on the upstream 16.1 release. The source is pulled directly from the release tarball at https://github.com/rhboot/shim/releases/tag/16.1 .

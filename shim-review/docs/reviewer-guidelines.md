@@ -110,7 +110,7 @@ referenced in the submission guidelines, but so long as the source is
 **clearly** the same, then it's acceptable to use a git repo instead.
 
 We can no longer accept shim signing submissions for versions before
-**15.7**.
+**15.8**.
 
 ## Certificates
 
@@ -193,7 +193,7 @@ If systemd-boot is used:
    time-consuming to do right - if a vendor is doing their own novel
    patches we may need to get more reviews.
 1. For more information about systemd-boot's security posture, please
-   consult [its documentation](https://github.com/systemd/systemd/blob/main/src/boot/efi/UEFI_SECURITY.md).
+   consult [its documentation](https://github.com/systemd/systemd/blob/main/src/boot/UEFI_SECURITY.md).
 
 Example of the .sbat entry of a systemd-boot binary:
 ```
