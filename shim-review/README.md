@@ -38,9 +38,13 @@ Provide the information, which can prove the genuineness with certainty.
 Company/tax register entries or equivalent:
 (a link to the organization entry in your jurisdiction's register will do)
 
-TODO(cisco): Provide a link to Cisco Systems, Inc.'s legal entity register
-entry (e.g. California Secretary of State / SEC EDGAR CIK 0000858877) that a
-reviewer can use to verify the company is a genuine legal entity.
+Cisco Systems, Inc, IRS EIN Tax ID 77-0059951
+
+Cisco Systems Annual reports filed with the SEC:
+https://www.sec.gov/edgar/browse/?CIK=858877
+
+Latest 10-K shows EIN:
+https://www.sec.gov/ix?doc=/Archives/edgar/data/0000858877/000085887725000111/csco-20250726.htm
 
 The public details of both your organization and the issuer in the EV certificate used for signing .cab files at Microsoft Hardware Dev Center File Signing Services.
 (**not** the CA certificate embedded in your shim binary)
@@ -52,10 +56,9 @@ Issuer: O=MyIssuer, Ltd., CN=MyIssuer EV Code Signing CA
 Subject: C=XX, O=MyCompany, Inc., CN=MyCompany, Inc.
 ```
 
-TODO(cisco): Paste the Issuer and Subject lines from the EV code-signing
-certificate that Cisco uses to sign the .cab uploaded to the Microsoft
-Hardware Dev Center. This is NOT the Cisco_Virtual_UEFI_SubCA_v3.der CA cert
-embedded in the shim.
+Issuer: CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O="DigiCert, Inc.", C=US
+
+Subject: CN="CISCO SYSTEMS, INC.", O="CISCO SYSTEMS, INC.", L=San Jose, ST=California, C=US, SERIALNUMBER=3704171
 
 *******************************************************************************
 ### What product or service is this for?
@@ -81,11 +84,11 @@ You will be asked to post the contents of these mails in your `shim-review` issu
 Please upload the PGP keys to a well-known keyserver like keyserver.ubuntu.com and/or include them in the review as an .asc file, and point to them here.
 
 *******************************************************************************
-- Name: Jeff Hewett
-- Position: Senior Technical Leader
-- Email address: jhewett@cisco.com
-- PGP key fingerprint: 8862 995D 05B6 62C5 7B39  6D16 EC60 A99E 0AA5 0BD8
-- File/keyserver location: TODO(cisco): Provide a resolvable location for this key (e.g. keyserver.ubuntu.com URL and/or an .asc file committed to this repo).
+- Name: Bridget Davis
+- Position: Software Engineer
+- Email address: briddavi@cisco.com
+- PGP key fingerprint: 325F B75C CDCC 97CE F2AB  CF06 F805 AF99 E052 3CFB
+- File/keyserver location: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x325FB75CCDCC97CEF2ABCF06F805AF99E0523CFB
 
 (Key should be signed by the other security contacts, pushed to a keyserver
 like keyserver.ubuntu.com, and preferably have signatures that are reasonably
@@ -98,14 +101,6 @@ well known in the Linux community.)
 - Position: Technical Leader
 - Email address: vannguye@cisco.com
 - PGP key fingerprint: 6A1D D8C5 0A9F 1B65 AF21  7B61 F0CB 4E57 37E9 C5DE
-- File/keyserver location: TODO(cisco): Provide a resolvable location for this key (e.g. keyserver.ubuntu.com URL and/or an .asc file committed to this repo).
-
-Alternate contact:
-- Name: Vasudev Luthra
-- Position: Software Engineer
-- Email address: valuthra@cisco.com
-- PGP key fingerprint: 0E5D 2BCE 8F16 5B33 6566  FC59 1934 ECB9 B06D 3A21
-- File/keyserver location: TODO(cisco): Provide a resolvable location for this key (e.g. keyserver.ubuntu.com URL and/or an .asc file committed to this repo).
 
 (Key should be signed by the other security contacts, pushed to a keyserver
 like keyserver.ubuntu.com, and preferably have signatures that are reasonably
@@ -240,26 +235,19 @@ Using downstream implementations from Almalinux and Canonical
 *******************************************************************************
 These CVEs are addressed in the parent distros. We do not modify the source of the grub.
 
-TODO(cisco): Confirm the AlmaLinux and Ubuntu GRUB2 versions you ship include
-the February 2025 (SBAT gen 5) fixes, and change this answer to a simple "yes"
-once verified.
-
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader, and if these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 5?
 Skip this, if you're not using GRUB2, otherwise do you have an entry in your GRUB2 binary similar to:
 `grub,5,Free Software Foundation,grub,GRUB_UPSTREAM_VERSION,https://www.gnu.org/software/grub/`?
 *******************************************************************************
-TODO(cisco): Confirm the upstream global SBAT generation in the shipped
-AlmaLinux/Ubuntu GRUB2 binaries is set to 5 (i.e. `grub,5,...`) and answer
-"yes". The previous submission was at generation 4.
+Yes
 
 *******************************************************************************
 ### Were old shims hashes provided to Microsoft for verification and to be added to future DBX updates?
 ### Does your new chain of trust disallow booting old GRUB2 builds affected by the CVEs?
 If you had no previous signed shim, say so here. Otherwise a simple _yes_ will do.
 *******************************************************************************
-- Our SHIM sub-CA was added to the Microsoft DBX.
-- Yes, a new root of trust is in the SHIM.
+Yes
 
 *******************************************************************************
 ### If your boot chain of trust includes a Linux kernel:
@@ -275,10 +263,7 @@ Yes
 ### How does your signed kernel enforce lockdown when your system runs with Secure Boot enabled?
 Hint: If it does not, we are not likely to sign your shim.
 *******************************************************************************
-TODO(cisco): Describe how the shipped AlmaLinux/Ubuntu kernels enforce lockdown
-under Secure Boot (e.g. CONFIG_SECURITY_LOCKDOWN_LSM /
-CONFIG_LOCK_DOWN_KERNEL_FORCE_INTEGRITY, EFI Secure Boot auto-enabling
-lockdown in integrity mode). This is a new required question.
+We will be enabling upstream kernel lockdown flags.
 
 *******************************************************************************
 ### Do you build your signed kernel with additional local patches? What do they do?
@@ -327,9 +312,6 @@ This should include logs for creating the buildroots, applying patches, doing th
 *******************************************************************************
 The log file is: https://github.com/cisco/sto-uefi-secure-bootloader/blob/rel_7/shim-review/build.log
 
-TODO(cisco): The committed build.log still reflects the 15.8 build. Regenerate
-it from the 16.1 build (`make build-no-cache`) and commit the updated log.
-
 *******************************************************************************
 ### What changes were made in the distro's secure boot chain since your SHIM was last signed?
 For example, signing new kernel's variants, UKI, systemd-boot, new certs, new CA, etc..
@@ -341,9 +323,7 @@ Rebased against 16.1
 *******************************************************************************
 ### What is the SHA256 hash of your final shim binary?
 *******************************************************************************
-TODO(cisco): Regenerate shimx64.efi from the 16.1 build and paste the new
-SHA256 here. The value below is from the previous 15.8 build and is stale.
-SHA2-256(shimx64.efi)=7d8bce770e56b615ba2b7021f56611fdb50948ebac4693fb0952e89d3c9e0258
+173493786c8cf693394d047073f1b59d7acb87c3e57a371551108afa32e2c31c
 
 *******************************************************************************
 ### How do you manage and protect the keys used in your shim?
@@ -365,11 +345,7 @@ to say that it is a CA? See the [docs](./docs/) for more guidance
 about this.
 *******************************************************************************
 Yes, we embed the Cisco_Virtual_UEFI_SubCA_v3.der CA certificate.
-
-TODO(cisco): Confirm whether Cisco_Virtual_UEFI_SubCA_v3.der contains the
-X509v3 Basic Constraints extension `CA:TRUE` (run `make cert-info` and check).
-State "yes" and paste the relevant extension. Upstream shim will require this
-in the future.
+The certificate includes X509v3 Basic Constraints to say that it is a CA.
 
 *******************************************************************************
 ### Do you add a vendor-specific SBAT entry to the SBAT section in each binary that supports SBAT metadata ( GRUB2, fwupd, fwupdate, systemd-boot, systemd-stub, shim + all child shim binaries )?
@@ -407,10 +383,20 @@ N/A
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
-AlmaLinux 9: grub2 - Version 2.06-61
-AlmaLinux 8: grub2 - Version 2.02-148
+AlmaLinux 10: grub2 - Version 2.12-46.el10_2
 
-Ubuntu: grub2 - Version 2.06-2
+AlmaLinux 9:  grub2 - Version 2.06-126.el9_8
+
+AlmaLinux 8:  grub2 - Version 2.02-170.el8_10
+
+Ubuntu 24.04 (Noble): grub2 - Version 2.12-1ubuntu7.3
+
+Ubuntu 22.04 (Jammy): grub2 - Version 2.06-2ubuntu14.8
+
+TODO(cisco): The versions above are the CURRENT upstream distro versions (as of
+mid-2026) and REPLACE the stale 15.8-era values (Alma9 2.06-61, Alma8 2.02-148,
+Ubuntu 2.06-2). Confirm the exact GRUB2 build that this SHIM release actually
+ships/boots for each distro and correct any that differ.
 
 *******************************************************************************
 ### If your shim launches any other components apart from your bootloader, please provide further details on what is launched.
@@ -448,9 +434,13 @@ A reasonable timeframe of waiting for a review can reach 2-3 months. Helping us 
 
 For newcomers, the applications labeled as [*easy to review*](https://github.com/rhboot/shim-review/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+to+review%22) are recommended to start the contribution process.
 *******************************************************************************
-TODO(cisco): List any shim-review issues you have reviewed/commented on to
-help the reviewers (or state that this is your first contribution). This is a
-new required question.
+I have performed 3 shim reviews:
+
+https://github.com/rhboot/shim-review/issues/504#issuecomment-3444722678
+
+https://github.com/rhboot/shim-review/issues/505#issuecomment-3427098529
+
+https://github.com/rhboot/shim-review/issues/515#issuecomment-3959926003
 
 *******************************************************************************
 ### Add any additional information you think we may need to validate this shim signing application.

@@ -8,6 +8,7 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list && \
 
 # Download and extract the upstream source tarball for shim
 RUN wget https://github.com/rhboot/shim/releases/download/16.1/shim-16.1.tar.bz2
+RUN sha256sum shim-16.1.tar.bz2
 RUN mkdir /shim-build
 RUN tar -xvf shim-16.1.tar.bz2 --directory /shim-build
 WORKDIR /shim-build/shim-16.1
