@@ -15,7 +15,7 @@ Note that we really only have experience with using GRUB2 or systemd-boot on Lin
 asking us to endorse anything else for signing is going to require some convincing on
 your part.
 
-As of 20 October 2025, shims sent to Microsoft will be signed with the 2011 and 2023 keys. For each shim you submit, you will receive two copies back, each signed by a different key. Here is the latest information from Microsoft: https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787
+As of 27 June 2026, shims sent to Microsoft can only be signed by the Microsoft UEFI CA 2023. It is no longer possible to get your shim signed by the "old" Microsoft Corporation UEFI CA 2011 key. Up-to-date information from Microsoft about Secure Boot can be found here: https://support.microsoft.com/en-US/servicing/os/secure-boot/2026/02/updates-and-announcements
 
 New signing requirements have also taken effect, and are available here: https://techcommunity.microsoft.com/blog/hardware-dev-center/updated-microsoft-uefi-signing-requirements/1062916 Please note that undergoing this shim review exempts you from yearly security audits, as long as your shim only hands off to open source boot loaders.
 
@@ -73,7 +73,7 @@ Customers using Cisco Virtual products that run on 3rd party servers (DELL, HP..
 *******************************************************************************
 ### Why are you unable to reuse shim from another distro that is already signed?
 *******************************************************************************
-We modify kernel configurations to meet our security requirements which requres signing with our own key.
+We modify kernel configurations to meet our security requirements which requires signing with our own key.
 
 *******************************************************************************
 ### Who is the primary contact for security updates, etc.?
@@ -159,7 +159,7 @@ None
 
 See https://techcommunity.microsoft.com/t5/hardware-dev-center/nx-exception-for-shim-community/ba-p/3976522 for more details on the signing of shim without NX bit.
 *******************************************************************************
-No change to default NX bit setting. We tested it on our target x86 architecture with entire shim/grub bootchain.
+NX bit disabled. We tested it on our target x86 architecture with entire shim/grub bootchain.
 
 *******************************************************************************
 ### What exact implementation of Secure Boot in GRUB2 do you have? (Either Upstream GRUB2 shim_lock verifier or Downstream RHEL/Fedora/Debian/Canonical-like implementation)
@@ -233,7 +233,7 @@ Using downstream implementations from Almalinux and Canonical
   * CVE-2025-1118
   * CVE-2025-1125
 *******************************************************************************
-These CVEs are addressed in the parent distros. We do not modify the source of the grub.
+Yes. These CVEs are addressed in the parent distros. We do not modify the source of the grub.
 
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader, and if these fixes have been applied, is the upstream global SBAT generation in your GRUB2 binary set to 5?
@@ -288,7 +288,7 @@ This ensures that your new shim+GRUB2 can no longer chainload those older GRUB2 
 
 If this is your first application or you're using a new CA certificate, please say so here.
 *******************************************************************************
-N/A
+We re-use the cert from #411. We re-sign upstream GRUBs, those carry upstream grub,5 SBAT.
 
 *******************************************************************************
 ### Is the Dockerfile in your repository the recipe for reproducing the building of your shim binary?
@@ -347,6 +347,8 @@ about this.
 Yes, we embed the Cisco_Virtual_UEFI_SubCA_v3.der CA certificate.
 The certificate includes X509v3 Basic Constraints to say that it is a CA.
 
+Regarding its long validity, we manage our expiry more granularly at the End Entity level. We prefer to keep the CAs at a longer time period to avoid issues with CA expiry. This was mentioned in our [previous review](https://github.com/rhboot/shim-review/issues/411#issuecomment-2165360503)
+
 *******************************************************************************
 ### Do you add a vendor-specific SBAT entry to the SBAT section in each binary that supports SBAT metadata ( GRUB2, fwupd, fwupdate, systemd-boot, systemd-stub, shim + all child shim binaries )?
 ### Please provide the exact SBAT entries for all binaries you are booting directly through shim.
@@ -383,20 +385,11 @@ N/A
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
+Upstream distros' GRUB2 - 2.12
+
 AlmaLinux 10: grub2 - Version 2.12-46.el10_2
 
-AlmaLinux 9:  grub2 - Version 2.06-126.el9_8
-
-AlmaLinux 8:  grub2 - Version 2.02-170.el8_10
-
 Ubuntu 24.04 (Noble): grub2 - Version 2.12-1ubuntu7.3
-
-Ubuntu 22.04 (Jammy): grub2 - Version 2.06-2ubuntu14.8
-
-TODO(cisco): The versions above are the CURRENT upstream distro versions (as of
-mid-2026) and REPLACE the stale 15.8-era values (Alma9 2.06-61, Alma8 2.02-148,
-Ubuntu 2.06-2). Confirm the exact GRUB2 build that this SHIM release actually
-ships/boots for each distro and correct any that differ.
 
 *******************************************************************************
 ### If your shim launches any other components apart from your bootloader, please provide further details on what is launched.
