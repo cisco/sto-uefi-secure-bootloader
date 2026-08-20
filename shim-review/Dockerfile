@@ -24,6 +24,7 @@ ADD sbat.csv data/sbat.csv
 
 # Build 64-bit
 RUN make -C build-x64 ARCH=x86_64 VENDOR_CERT_FILE=../Cisco_Virtual_UEFI_SubCA_v3.der \
+    SBAT_AUTOMATIC_DATE=2025021800 \
     TOPDIR=.. -f ../Makefile
 
 # Output hash of shimx64.efi
