@@ -278,6 +278,8 @@ Our patches apply KSPP hardening configurations.
 *******************************************************************************
 We do not use an ephemeral key. We use a Cisco HSM backed key for signing.
 
+We use our own embedded cert in the kernel to verify our signatures. The kernel can be delivered with new embedded keys as needed that do not allow loading older modules.
+
 *******************************************************************************
 ### If you use vendor_db functionality of providing multiple certificates and/or hashes please briefly describe your certificate setup.
 ### If there are allow-listed hashes please provide exact binaries for which hashes are created via file sharing service, available in public with anonymous access for verification.
@@ -321,7 +323,8 @@ For example, signing new kernel's variants, UKI, systemd-boot, new certs, new CA
 
 Skip this, if this is your first application for having shim signed.
 *******************************************************************************
-Rebased against 16.1
+Rebased against 16.1, added SBAT_AUTOMATIC_DATE=2025021800 to enforce grub,5, 
+new security contact (Bridget Davis).
 
 *******************************************************************************
 ### What is the SHA256 hash of your final shim binary?
