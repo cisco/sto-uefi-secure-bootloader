@@ -101,6 +101,7 @@ well known in the Linux community.)
 - Position: Technical Leader
 - Email address: vannguye@cisco.com
 - PGP key fingerprint: 6A1D D8C5 0A9F 1B65 AF21  7B61 F0CB 4E57 37E9 C5DE
+- File/keyserver location: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x6A1DD8C50A9F1B65AF217B61F0CB4E5737E9C5DE
 
 (Key should be signed by the other security contacts, pushed to a keyserver
 like keyserver.ubuntu.com, and preferably have signatures that are reasonably
@@ -159,13 +160,13 @@ None
 
 See https://techcommunity.microsoft.com/t5/hardware-dev-center/nx-exception-for-shim-community/ba-p/3976522 for more details on the signing of shim without NX bit.
 *******************************************************************************
-NX bit disabled. We tested it on our target x86 architecture with entire shim/grub bootchain.
+NX bit is not set. We tested it on our target x86 architecture with entire shim/grub bootchain.
 
 *******************************************************************************
 ### What exact implementation of Secure Boot in GRUB2 do you have? (Either Upstream GRUB2 shim_lock verifier or Downstream RHEL/Fedora/Debian/Canonical-like implementation)
 Skip this, if you're not using GRUB2.
 *******************************************************************************
-Using downstream implementations from Almalinux and Canonical
+Using downstream implementations from Almalinux and Canonical.
 
 *******************************************************************************
 ### Do you have fixes for all the following GRUB2 CVEs applied?
@@ -247,7 +248,8 @@ Yes
 ### Does your new chain of trust disallow booting old GRUB2 builds affected by the CVEs?
 If you had no previous signed shim, say so here. Otherwise a simple _yes_ will do.
 *******************************************************************************
-Yes
+Yes they were provided. Yes, old GRUB2 builds affected by the CVEs are disallowed
+due to building the shim with SBAT_AUTOMATIC_DATE=2025021800.
 
 *******************************************************************************
 ### If your boot chain of trust includes a Linux kernel:
@@ -289,6 +291,7 @@ This ensures that your new shim+GRUB2 can no longer chainload those older GRUB2 
 If this is your first application or you're using a new CA certificate, please say so here.
 *******************************************************************************
 We re-use the cert from #411. We re-sign upstream GRUBs, those carry upstream grub,5 SBAT.
+We build the shim with SBAT_AUTOMATIC_DATE=2025021800 so grub,5 is enforced.
 
 *******************************************************************************
 ### Is the Dockerfile in your repository the recipe for reproducing the building of your shim binary?
@@ -323,7 +326,7 @@ Rebased against 16.1
 *******************************************************************************
 ### What is the SHA256 hash of your final shim binary?
 *******************************************************************************
-173493786c8cf693394d047073f1b59d7acb87c3e57a371551108afa32e2c31c
+06de30a7b6d20ee0dfa8433b10078a85553c2f2c282aafba5dd7153d46e5de2f
 
 *******************************************************************************
 ### How do you manage and protect the keys used in your shim?
@@ -367,7 +370,7 @@ shim,4,UEFI shim,shim,1,https://github.com/rhboot/shim
 shim.cisco,1,Cisco,shim,16.1,psirt@cisco.com
 ```
 
-We use upstream distros for grub since we are not rebuilding it.
+We use upstream distros for grub since we are not rebuilding it. They all contain `grub,5`.
 
 *******************************************************************************
 ### If shim is loading GRUB2 bootloader, which modules are built into your signed GRUB2 image?
@@ -377,6 +380,74 @@ Hint: this is about those modules that are in the binary itself, not the `.mod` 
 *******************************************************************************
 We inherit the same modules from the upstream grub providers.
 
+Ubuntu 24:
+```
+acpi              gcry_cast5        loadenv           raid5rec
+afsplitter        gcry_crc          loopback          raid6rec
+all_video         gcry_des          ls                reboot
+archelp           gcry_dsa          lsefi             regexp
+bitmap            gcry_idea         lsefimmap         relocator
+bitmap_scale      gcry_md4          lsefisystab       search
+boot              gcry_md5          lssal             search_fs_file
+btrfs             gcry_rfc2268      luks              search_fs_uuid
+bufio             gcry_rijndael     lvm               search_label
+cat               gcry_rmd160       lzopio            serial
+chain             gcry_rsa          mdraid09          setjmp
+configfile        gcry_seed         mdraid1x          sleep
+cpuid             gcry_serpent      memdisk           smbios
+crypto            gcry_sha1         minicmd           squash4
+cryptodisk        gcry_sha256       mmap              terminal
+datetime          gcry_sha512       mpi               terminfo
+disk              gcry_tiger        net               test
+diskfilter        gcry_twofish      normal            tpm
+echo              gcry_whirlpool    ntfs              trig
+efi_gop           gettext           part_apple        true
+efi_uga           gfxmenu           part_gpt          video
+efifwsetup        gfxterm           part_msdos        video_bochs
+efinet            gfxterm_background password_pbkdf2  video_cirrus
+ext2              gzio              pbkdf2            video_colors
+extcmd            halt              peimage           video_fb
+fat               help              pgp               xfs
+font              hfsplus           play              xzio
+fshelp            iso9660           png               zfs
+gcry_arcfour      jpeg              priority_queue    zfscrypt
+gcry_blowfish     keystatus         probe             zfsinfo
+gcry_camellia     linux             procfs            zstd
+```
+
+AlmaLinux 10:
+```
+acpi              extcmd            loopback          search
+afsplitter        f2fs              lsefi             search_fs_file
+all_video         fat               lsefimmap         search_fs_uuid
+archelp           font              luks              search_label
+at_keyboard       fshelp            luks2             serial
+backtrace         gcry_crc          lvm               sleep
+bitmap            gcry_keccak       lzopio            squash4
+bitmap_scale      gcry_rijndael     mdraid09          syslinuxcfg
+blscfg            gcry_rsa          mdraid1x          terminal
+blsuki            gcry_serpent      memdisk           terminfo
+boot              gcry_sha1         minicmd           test
+btrfs             gcry_sha256       mmap              tftp
+bufio             gcry_sha512       mpi               tpm
+cat               gcry_twofish      net               trig
+chain             gcry_whirlpool    normal            usb
+configfile        gettext           part_apple        usbserial_common
+connectefi        gfxmenu           part_gpt          usbserial_ftdi
+crypto            gfxterm           part_msdos        usbserial_pl2303
+cryptodisk        gzio              password_pbkdf2   usbserial_usbdebug
+datetime          halt              pbkdf2            version
+disk              hfsplus           pgp               video
+diskfilter        http              png               video_bochs
+echo              increment         priority_queue    video_cirrus
+efi_gop           iso9660           procfs            video_colors
+efi_netfs         jpeg              raid6rec          video_fb
+efi_uga           json              reboot            xfs
+efifwsetup        keylayouts        regexp            xzio
+efinet            linux             relocator         zstd
+ext2              loadenv
+```
+
 *******************************************************************************
 ### If you are using systemd-boot on arm64 or riscv, is the fix for [unverified Devicetree Blob loading](https://github.com/systemd/systemd/security/advisories/GHSA-6m6p-rjcq-334c) included?
 *******************************************************************************
@@ -385,11 +456,15 @@ N/A
 *******************************************************************************
 ### What is the origin and full version number of your bootloader (GRUB2 or systemd-boot or other)?
 *******************************************************************************
-Upstream distros' GRUB2 - 2.12
+We resign grub from upstream distros. The current versions are:
 
-AlmaLinux 10: grub2 - Version 2.12-46.el10_2
+Ubuntu 22.04 (Jammy): grub2 - Version 2.06-2ubuntu14.8
 
 Ubuntu 24.04 (Noble): grub2 - Version 2.12-1ubuntu7.3
+
+AlmaLinux 9: grub2 - Version 2.06-126.el9_8.alma.1
+
+AlmaLinux 10: grub2 - Version  2.12-46.el10_2.alma.1
 
 *******************************************************************************
 ### If your shim launches any other components apart from your bootloader, please provide further details on what is launched.
@@ -407,7 +482,9 @@ N/A
 ### How do the launched components prevent execution of unauthenticated code?
 Summarize in one or two sentences, how your secure bootchain works on higher level.
 *******************************************************************************
-N/A
+Shim -> Grub -> Kernel
+
+shim validates grub2 against the embedded CA cert, grub2 asks shim to validate kernel signture
 
 *******************************************************************************
 ### Does your shim load any loaders that support loading unsigned kernels (e.g. certain GRUB2 configurations)?
@@ -417,7 +494,17 @@ No
 *******************************************************************************
 ### What kernel are you using? Which patches and configuration does it include to enforce Secure Boot?
 *******************************************************************************
-Latest kernel version of Ubuntu and AlmaLinux.
+Latest kernel version of Ubuntu and AlmaLinux. Versions current at submission; we track each distribution's security updates.
+
+Ubuntu 22.04 (Jammy): linux-image-5.15.0-190-generic
+
+Ubuntu 24.04 (Noble): linux-image-6.8.0-138-generic
+
+AlmaLinux 9: kernel-5.14.0-687.39.1.el9_8
+
+AlmaLinux 10: kernel-6.12.0-211.49.1.el10_2
+
+Inherits Ubuntu and AlmaLinux's Secure Boot patches and configuration.
 
 *******************************************************************************
 ### What contributions have you made to help us review the applications of other applicants?
